@@ -5,10 +5,10 @@ describe Domodoro do
 
     describe 'as a server' do
       it 'spawns a Domodoro server' do
-        host, port = stub, stub
-        Domodoro::Server.expects(:start).with(host, port)
+        port = stub
+        Domodoro::Server.expects(:start).with(port)
 
-        Domodoro.start 'serve', host, port
+        Domodoro.start 'serve', port
       end
     end
 
