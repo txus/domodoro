@@ -55,5 +55,15 @@ module Domodoro
       wait!
       end
     end
+
+    describe '.work' do
+      it 'plays a sound if sound is activated'
+      it 'displays a growl if growl is activated'
+    end
+
+    describe '.break' do
+      it 'plays a sound if sound is activated'
+      it 'displays a growl if growl is activated'
+    end
   end
 end
