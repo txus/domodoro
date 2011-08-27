@@ -1,4 +1,5 @@
 require "domodoro/version"
+require 'eventmachine'
 
 module Domodoro
 
