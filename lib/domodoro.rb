@@ -41,7 +41,7 @@ module Domodoro
     class << self
       def start(host, port)
         EM.run do
-          channel = RandChannel.new
+          channel = Channel.new
 
           EM.start_server(host, port, self)
 
