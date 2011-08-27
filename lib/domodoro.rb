@@ -43,7 +43,7 @@ module Domodoro
         EM.run do
           channel = Channel.new
 
-          EM.start_server(host, port, self)
+          EM.start_server(host, port, self, channel)
 
           EM.add_periodic_timer(1) do
             if Time.now.sec == 0
