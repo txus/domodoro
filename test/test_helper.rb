@@ -1,8 +1,11 @@
 require 'rubygems'
 
 gem 'minitest'
+require 'minitest/spec'
 require 'minitest/autorun'
-require 'mocha'
-require 'purdytest'
+
+Dir['test/support/*.rb'].each do |file|
+ require file
+end
 
 require 'domodoro'
