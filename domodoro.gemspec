@@ -20,4 +20,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'eventmachine'
   s.add_development_dependency 'minitest'
+  s.add_development_dependency 'mocha'
+  s.add_development_dependency 'purdytest'
 end

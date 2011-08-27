@@ -79,11 +79,16 @@ module EM # :nodoc:
         def it *args, &block # :nodoc:
           return super unless block_given?
 
+          timeout = 0.1
+          if args.last.is_a?(Hash) && args.last[:timeout]
+            timeout = args.pop[:timeout]
+          end
+
           super do
             @wait = false
 
             EM.run do
-              @timeout = EM.add_timer(0.1) do
+              @timeout = EM.add_timer(timeout) do
                 flunk "test timed out!"
               end
 
