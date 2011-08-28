@@ -44,6 +44,12 @@ Each of the clients that want to connect must do this:
 The clients will receive notifications via sound/growl (configurable in a
 `~/.domodororc` file).
 
+## Caveats
+
+* Sound notifications use `afplay`, which ships by default with OSX.
+  If you're not using OSX, try to install the `afplay` program manually or...
+  send a patch to make it work with your OS :)
+
 ## Configuration
 
 By default, both sound and visual notifications are displayed on each event.
@@ -57,4 +63,5 @@ If you want to configure this, create a file in your home directory named
 ## Copyright
 
 Copyright (c) 2011 Josep M. Bach. Released under the MIT license.
+
 
