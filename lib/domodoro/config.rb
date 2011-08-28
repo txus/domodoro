@@ -11,6 +11,9 @@ module Domodoro
 
         self.visual = file['visual']
         self.sound  = file['sound']
+      else
+        self.visual = true
+        self.sound  = true
       end
     end
   end

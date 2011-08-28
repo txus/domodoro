@@ -3,7 +3,8 @@ module Domodoro
     attr_reader :channel, :sid
 
     class << self
-      def start(host, port)
+      def start(host='127.0.0.1', port='9111')
+        puts "#{Time.now} - Domodoro serving at #{host}:#{port}"
         EM.run do
           channel = Channel.new
 

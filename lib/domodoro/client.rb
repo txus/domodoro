@@ -13,8 +13,10 @@ module Domodoro
             def c.receive_line(line)
               case line
                 when /start/
+                  puts "#{Time.now} - Starting pomodoro!"
                   Client.work
                 when /stop/
+                  puts "#{Time.now} - Pomdoro break!"
                   Client.break
               end
             end
