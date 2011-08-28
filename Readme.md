@@ -1,4 +1,4 @@
-# domodoro
+# domodoro [![Build Status](https://secure.travis-ci.org/txus/domodoro.png)](https://secure.travis-ci.org/txus/domodoro.png])
 
 Distributed pomodoro architecture running on EventMachine.
 
@@ -68,3 +68,4 @@ If you want to configure this, create a file in your home directory named
 ## Copyright
 
 Copyright (c) 2011 Josep M. Bach. Released under the MIT license.
+
