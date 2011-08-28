@@ -13,9 +13,24 @@ module Domodoro
           EM.add_periodic_timer(1) do
             if Time.now.sec == 0
               channel.broadcast(Time.now.hour, Time.now.min)
+            else
+              EM.next_tick do
+                print_time
+              end
             end
           end
         end
+      end
+
+      def print_time
+        hour = Time.now.hour.to_s.rjust(2, '0')
+        min  = Time.now.min.to_s.rjust(2, '0')
+        secs = Time.now.sec.to_s.rjust(2, '0')
+        $stdout.print "\r"
+        $stdout.print " " * 20
+        $stdout.print "\r"
+        $stdout.print "#{hour}:#{min}:#{secs}"
+        $stdout.flush
       end
     end
 
