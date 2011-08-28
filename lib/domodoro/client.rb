@@ -4,7 +4,7 @@ module Domodoro
   class Client
     class << self
 
-      def start(host, port)
+      def start(host, port='9111')
         Config.load
         puts "#{Time.now} - Domodoro listening on #{host}:#{port}"
         puts "Visual notifications: #{Config.visual}"
