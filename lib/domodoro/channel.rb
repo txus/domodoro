@@ -2,7 +2,7 @@ module Domodoro
   class Channel < EM::Channel
     def broadcast(hour, min)
       if ENV['DEBUG']
-        puts 'debug mode'
+        puts 'DEBUG MODE: Start on even minutes, stop on odd minutes'
         if min % 2 == 0
           puts "#{Time.now} - Starting pomodoro!"
           self << :start
