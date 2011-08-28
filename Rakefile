@@ -1,5 +1,7 @@
-if defined?(Bundler)
+begin
+  require 'bundler'
   require "bundler/gem_tasks"
+rescue
 end
 
 require 'rake/testtask'
