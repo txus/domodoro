@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'eventmachine'
 
+# Credits to Pete Higgins, the author of this module.
+#
+# https://github.com/phiggins/em-minitest-spec
+#
 module EM # :nodoc:
   module MiniTest # :nodoc:
     module Spec # :nodoc

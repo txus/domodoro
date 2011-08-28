@@ -6,8 +6,12 @@ require 'minitest/spec'
 require 'purdytest'
 require 'minitest/autorun'
 
-Dir['test/support/*.rb'].each do |file|
- require file
+if respond_to?(:require_relative)
+  require_relative 'support/em-minitest.rb'
+else
+  Dir['test/support/em-minitest.rb'].each do |file|
+   require file
+  end
 end
 
 require 'domodoro'

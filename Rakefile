@@ -1,4 +1,6 @@
-require "bundler/gem_tasks"
+if defined?(Bundler)
+  require "bundler/gem_tasks"
+end
 
 require 'rake/testtask'
 desc "Run Domodoro tests"
