@@ -1,6 +1,7 @@
 require 'eventmachine'
 
 require "domodoro/version"
+require "domodoro/config"
 require "domodoro/channel"
 require "domodoro/server"
 require "domodoro/client"
