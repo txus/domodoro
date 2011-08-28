@@ -27,6 +27,9 @@ Solution: a pub/sub architecture where a centralized publisher (the domodoro
 server) broadcasts pomodoro events to whoever wants to subscribe to them, so
 whoever wants to stay synced, can, and who doesn't, can stay out of it.
 
+This gem is tested with MRI versions 1.8.7 and 1.9.2, Rubinius versions 1.2.4
+and 2.0.0pre, and ruby-head.
+
 ## Install
 
     $ gem install domodoro
@@ -65,6 +68,3 @@ If you want to configure this, create a file in your home directory named
 ## Copyright
 
 Copyright (c) 2011 Josep M. Bach. Released under the MIT license.
-
-
-
