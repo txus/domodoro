@@ -144,7 +144,7 @@ module Domodoro
 
       describe 'otherwise' do
         it 'does not display any visual notification', :timeout => 0.2 do
-          Config.stubs(:visual?).returns false
+          Config.stubs(:visual).returns false
           Notify.expects(:notify).never
           Client.break
 
