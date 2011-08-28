@@ -4,6 +4,14 @@ module Domodoro
   class Client
     class << self
 
+      def connected
+        @connected
+      end
+
+      def connected=(value)
+        @connected = true
+      end
+
       def start(host, port='9111')
         Config.load
         puts "#{Time.now} - Domodoro listening on #{host}:#{port}"
@@ -13,6 +21,10 @@ module Domodoro
         EM.run do
           EM.connect(host, port) do |c|
             c.extend EM::P::LineText2
+            def c.connection_completed
+              puts " - Connected to server!"
+              Client.connected = true
+            end
             def c.receive_line(line)
               case line
                 when /start/
@@ -26,7 +38,11 @@ module Domodoro
           end
           EM.add_periodic_timer(1) do
             EM.next_tick do
-              print_time
+              if Client.connected
+                print_time
+              else
+                puts 'Cannot connect to server. Is it running?'
+              end
             end
           end
         end
