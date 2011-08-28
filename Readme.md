@@ -51,9 +51,10 @@ The clients will receive notifications via sound/growl (configurable in a
   If you're not using OSX, try to install the `afplay` program manually or...
   send a patch to make it work with your OS :)
 
-* The pomodoro schedule is (as of v0.0.1) hard-coded. It starts at 8:00 AM,
+* The pomodoro schedule is (as of v0.0.3) hard-coded. It starts at 8:00 AM,
   stops at 13:00 for lunch, and starts again at 13:20. In the following
   versions this will be freely configurable.
+
 
 ## Configuration
 
@@ -68,4 +69,5 @@ If you want to configure this, create a file in your home directory named
 ## Copyright
 
 Copyright (c) 2011 Josep M. Bach. Released under the MIT license.
+
 
