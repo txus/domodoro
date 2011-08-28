@@ -3,3 +3,4 @@
 Gemfile.lock
 pkg/*
 *.rbc
+.DS_Store
