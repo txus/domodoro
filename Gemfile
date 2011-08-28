@@ -6,3 +6,4 @@ gemspec
 gem 'guard'
 gem 'guard-minitest'
 gem 'rb-fsevent'
+gem 'rake'
