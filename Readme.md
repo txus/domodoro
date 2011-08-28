@@ -44,6 +44,17 @@ Each of the clients that want to connect must do this:
 The clients will receive notifications via sound/growl (configurable in a
 `~/.domodororc` file).
 
+## Configuration
+
+By default, both sound and visual notifications are displayed on each event.
+If you want to configure this, create a file in your home directory named
+`.domodororc` with some YAML configuration:
+
+    $ touch ~/.domodororc
+    $ echo "visual: true" >> ~/.domodororc
+    $ echo "sound: false" >> ~/.domodororc
+
 ## Copyright
 
 Copyright (c) 2011 Josep M. Bach. Released under the MIT license.
+
