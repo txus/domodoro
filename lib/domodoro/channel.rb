@@ -1,6 +1,6 @@
 module Domodoro
   class Channel < EM::Channel
-    def broadcast(hour, min)
+    def broadcast(timestamp, schedule)
       if ENV['DEBUG']
         puts 'DEBUG MODE: Start on even minutes, stop on odd minutes'
         if min % 2 == 0
@@ -13,31 +13,13 @@ module Domodoro
         return
       end
 
-      if (hour >= 8 && hour < 13)
-        morning(min)
-      elsif (hour >= 13 && min >= 20) &&
-        afternoon(min)
-      end
-    end
-    def morning(min)
-      case min
-      when 0, 30
-        puts "#{Time.now} - Starting pomodoro!"
-        self << :start
-      when 25, 55
-        puts "#{Time.now} - Pomodoro break!"
-        self << :stop
-      end
-    end
-
-    def afternoon(min)
-      case min
-      when 20, 50
-        puts "#{Time.now} - Starting pomodoro!"
-        self << :start
-      when 45, 15
-        puts "#{Time.now} - Pomodoro break!"
-        self << :stop
+      action = schedule.to_hash[timestamp]
+      if action
+        next_action = schedule.action_after(timestamp)
+        self << {
+          :action => action,
+          :next_action => next_action
+        }
       end
     end
   end

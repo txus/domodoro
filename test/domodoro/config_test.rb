@@ -9,7 +9,7 @@ module Domodoro
   visual: true
   sound: false
     """
-        Domodoro::Config.load
+        Domodoro::Config.load_client_configuration
 
         assert_equal true, Domodoro::Config.visual
         assert_equal false, Domodoro::Config.sound
@@ -20,7 +20,7 @@ module Domodoro
       it 'sets both options to true' do
         File.stubs(:exist?).returns false
 
-        Domodoro::Config.load
+        Domodoro::Config.load_client_configuration
 
         assert_equal true, Domodoro::Config.visual
         assert_equal true, Domodoro::Config.sound

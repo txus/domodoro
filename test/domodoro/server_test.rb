@@ -6,18 +6,14 @@ module Domodoro
 
     before do
       @channel = Channel.new
-    end
-
-    it 'initializes with a channel' do
-      server = Domodoro::Server.new(nil, @channel)
-      assert_equal @channel, server.channel
+      @schedule = Schedule.new
+      @schedule.generate!
     end
 
     it 'repeats every message broadcasted to the channel' do
-      server = Server.new(nil, @channel)
-      EM.start_server('127.0.0.1', 8888, Server, :app => server)
+      EM.start_server('127.0.0.1', 8888, Server, @channel, @schedule)
 
-      server.expects(:send_data).with(":start\n")
+      Server.any_instance.expects(:send_data).with(":start\n")
 
       @channel << :start
     end
@@ -25,7 +21,8 @@ module Domodoro
     describe '.start' do
       it 'opens a server with a new channel' do
         Channel.expects(:new).returns @channel
-        EM.expects(:start_server).with('0.0.0.0', '8888', Server, @channel)
+        Schedule.expects(:new).returns @schedule
+        EM.expects(:start_server).with('0.0.0.0', '8888', Server, @channel, @schedule)
 
         Server.start('0.0.0.0', '8888')
       end
@@ -54,6 +51,35 @@ module Domodoro
 
         EM.add_timer(3.5) do
           assert_equal 3, Tick.num
+          done!
+        end
+
+        wait!
+      end
+    end
+
+    describe 'on connection' do
+      it 'sends the current and next actions to the client', :timeout => 0.2 do
+        Server.stubs(:timestamp).returns "13:15"
+
+        EM.start_server('127.0.0.1', 8888, Server, @channel, @schedule)
+
+        FakeSocketClient = Class.new(EM::Connection) do
+          include EM::P::ObjectProtocol
+          @@object = nil
+          def receive_object(object)
+            @@object = object
+          end
+        end
+
+        EM.connect('127.0.0.1', 8888, FakeSocketClient)
+
+        EM.add_timer(0.1) do
+          object = FakeSocketClient.class_variable_get(:@@object)
+
+          assert_equal ["13:00", :lunch], object[:current_action]
+          assert_equal ["13:30", :start], object[:next_action]
+
           done!
         end
 

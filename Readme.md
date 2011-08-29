@@ -51,12 +51,9 @@ The clients will receive notifications via sound/growl (configurable in a
   If you're not using OSX, try to install the `afplay` program manually or...
   send a patch to make it work with your OS :)
 
-* The pomodoro schedule is (as of v0.0.3) hard-coded. It starts at 8:00 AM,
-  stops at 13:00 for lunch, and starts again at 13:20. In the following
-  versions this will be freely configurable.
-
-
 ## Configuration
+
+### Client configuration
 
 By default, both sound and visual notifications are displayed on each event.
 If you want to configure this, create a file in your home directory named
@@ -66,8 +63,25 @@ If you want to configure this, create a file in your home directory named
     $ echo "visual: true" >> ~/.domodororc
     $ echo "sound: false" >> ~/.domodororc
 
+### Server configuration
+
+Inside the server machine, to configure the pomodoro schedule, create a
+`~/.domodororc` file with YAML configuration (the values provided below are
+those that will be used by default if you don't specify them):
+
+````yaml
+server:
+  pomodoro_duration: 25  # in minutes
+  pomodoro_break: 5      # in minutes
+  long_break_after: 4    # pomodoros
+
+  day_start: "08:30"
+  day_end: "16:30"
+
+  lunch_time: "13:00"
+  lunch_duration: 30     # in minutes
+````
+
 ## Copyright
 
 Copyright (c) 2011 Josep M. Bach. Released under the MIT license.
-
-
