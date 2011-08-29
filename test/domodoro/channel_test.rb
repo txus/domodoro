@@ -12,13 +12,23 @@ module Domodoro
 
     describe 'broadcast' do
       before do
-        @schedule = {'08:30' => :start, '09:00' => :stop}
+        @schedule = Schedule.new
+        @schedule.instance_variable_set(:@times, {
+          '08:30' => :start,
+          '09:00' => :stop
+        })
       end
 
       describe 'if theres an action for the timestamp' do
         it 'broadcasts it' do
-          @channel.expects(:<<).with(:start)
-          @channel.expects(:<<).with(:stop)
+          @channel.expects(:<<).with(
+            :action => ["08:30", :start],
+            :next_action => ["09:00", :stop]
+          )
+          @channel.expects(:<<).with(
+            :action => ["09:00", :stop],
+            :next_action => nil
+          )
 
           @channel.broadcast("08:30", @schedule)
           @channel.broadcast("09:00", @schedule)

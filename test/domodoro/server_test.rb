@@ -59,23 +59,26 @@ module Domodoro
     end
 
     describe 'on connection' do
-      it 'sends the current and next actions to the client', :timeout => 0.2 do
+      it 'sends the current and next actions to the client', :timeout => 0.3 do
         Server.stubs(:timestamp).returns "13:15"
 
         EM.start_server('127.0.0.1', 8888, Server, @channel, @schedule)
 
         FakeSocketClient = Class.new(EM::Connection) do
           include EM::P::ObjectProtocol
-          @@object = nil
+          @object = nil
+          def self.object=(obj)
+            @object = obj
+          end
           def receive_object(object)
-            @@object = object
+            self.class.object = object
           end
         end
 
         EM.connect('127.0.0.1', 8888, FakeSocketClient)
 
-        EM.add_timer(0.1) do
-          object = FakeSocketClient.class_variable_get(:@@object)
+        EM.add_timer(0.25) do
+          object = FakeSocketClient.class_eval "@object"
 
           assert_equal ["13:00", :lunch], object[:current_action]
           assert_equal ["13:30", :start], object[:next_action]

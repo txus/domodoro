@@ -83,5 +83,20 @@ module Domodoro
         "08:15".wont_equal @timepoint
       end
     end
+
+    describe '#left_until' do
+      it 'returns the time left until another timestamp' do
+        @a = Timepoint.new(8, 30)
+        @b = Timepoint.new(9, 45)
+        @c = Timepoint.new(11, 10)
+        @d = Timepoint.new(8, 32)
+        @e = Timepoint.new(15, 01)
+
+        assert_match /01:15:/, @a.left_until(@b)
+        assert_match /01:25:/, @b.left_until(@c) #2:-35
+        assert_match /00:02:/, @a.left_until(@d)
+        assert_match /06:31:/, @a.left_until(@e)
+      end
+    end
   end
 end

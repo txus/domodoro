@@ -36,16 +36,16 @@ module Domodoro
             def c.receive_object(object)
               case object[:current_action].last
               when :start
-                puts "[#{object[:current_action]}] - Starting pomodoro!"
+                puts "[#{object[:current_action].first}] - Starting pomodoro!"
                 Client.work
               when :stop
-                puts "[#{object[:current_action]}] - Pomodoro break!"
+                puts "[#{object[:current_action].first}] - Pomodoro break!"
                 Client.break
               when :lunch
-                puts "[#{object[:current_action]}] - Lunch time!"
+                puts "[#{object[:current_action].first}] - Lunch time!"
                 Client.lunch
               when :go_home
-                puts "[#{object[:current_action]}] - Time to go home!"
+                puts "[#{object[:current_action].first}] - Time to go home!"
                 Client.home
               end
               Client.next_action = object[:next_action]
@@ -64,51 +64,29 @@ module Domodoro
 
       end
 
-      def work
-        EM.defer do
-          if Config.visual
-            Notify.notify "Domodoro", "Time to work!"
-          end
-          if Config.sound
-            system("afplay #{path_to('start.wav')}")
-          end
-        end
-      end
-
-      def break
-        EM.defer do
-          if Config.visual
-            Notify.notify "Domodoro", "Take a 5 min. break."
-          end
-          if Config.sound
-            system("afplay #{path_to('stop.wav')}")
-          end
-        end
-      end
-
-      def lunch
-        EM.defer do
-          if Config.visual
-            Notify.notify "Domodoro", "Lunch time!"
-          end
-          if Config.sound
-            system("afplay #{path_to('lunch.wav')}")
-          end
-        end
-      end
-
-      def home
-        EM.defer do
-          if Config.visual
-            Notify.notify "Domodoro", "Time to go home!"
-          end
-          if Config.sound
-            system("afplay #{path_to('home.wav')}")
+      %w(work break lunch home).each do |action|
+        define_method(action) do
+          EM.defer do
+            if Config.visual
+              Notify.notify "Domodoro", message_for(action)
+            end
+            if Config.sound
+              system("afplay #{path_to("#{action}.wav")}")
+            end
           end
         end
       end
 
       private
+
+      def message_for(action)
+        case action.to_s
+        when "work" then "Time to work!"
+        when "break" then "Time to take a little break."
+        when "lunch" then "Lunch time!"
+        when "home" then "Ok folks, time to go home!"
+        end
+      end
 
       def path_to(asset)
         File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'assets', asset))
@@ -121,13 +99,14 @@ module Domodoro
                  when :stop    then "Pomodoro Break"
                  when :lunch   then "Lunch time"
                  when :go_home then "Go home"
+                 end
 
         time_left = timestamp.left_until
 
         $stdout.print "\r"
         $stdout.print " " * 50
         $stdout.print "\r"
-        $stdout.print "Next: #{action} in #{time_left}"
+        $stdout.print "[ #{Client.current_action} ] - Next: #{action} in #{time_left}"
         $stdout.flush
       end
 

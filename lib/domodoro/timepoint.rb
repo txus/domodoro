@@ -56,11 +56,23 @@ module Domodoro
     end
 
     def left_until(timestamp)
-      hours_to_reduce = (60 / @min - minutes).to_i
+      secs = 60 - Time.now.sec
+      hours = timestamp.hour - @hour
 
-      h = @hour - hours_to_reduce
-      m = (@min - minutes) % 60
-      s = 60 - Time.now.sec
+      if timestamp.hour == @hour
+        remaining_minutes = (timestamp.min - @min).to_s.rjust(2, '0')
+        return "00:#{remaining_minutes}::#{secs}"
+      end
+
+      if timestamp.min < @min
+        hours -= 1
+      end
+
+      mins = (timestamp.min - @min) % 60
+
+      h = hours.to_s.rjust(2, '0')
+      m = mins.to_s.rjust(2, '0')
+      s = secs.to_s.rjust(2, '0')
 
       "#{h}:#{m}:#{s}"
     end

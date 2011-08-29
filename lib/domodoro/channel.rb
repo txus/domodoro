@@ -17,7 +17,7 @@ module Domodoro
       if action
         next_action = schedule.action_after(timestamp)
         self << {
-          :action => action,
+          :action => [timestamp, action],
           :next_action => next_action
         }
       end
