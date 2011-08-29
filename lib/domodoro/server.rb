@@ -1,9 +1,9 @@
 module Domodoro
   class Server < EM::Connection
-    attr_reader :channel, :sid
+    attr_reader :channel
 
     class << self
-      def start(host='127.0.0.1', port='9111')
+      def start(host='0.0.0.0', port='9111')
         puts "#{Time.now} - Domodoro serving at #{host}:#{port}"
         EM.run do
           channel = Channel.new
