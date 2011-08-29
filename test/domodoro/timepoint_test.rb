@@ -86,16 +86,19 @@ module Domodoro
 
     describe '#left_until' do
       it 'returns the time left until another timestamp' do
+        Time.stubs(:now).returns stub(:sec => 55)
         @a = Timepoint.new(8, 30)
         @b = Timepoint.new(9, 45)
         @c = Timepoint.new(11, 10)
         @d = Timepoint.new(8, 32)
         @e = Timepoint.new(15, 01)
+        @f = Timepoint.new(8, 31)
 
-        assert_match /01:15:/, @a.left_until(@b)
-        assert_match /01:25:/, @b.left_until(@c) #2:-35
-        assert_match /00:02:/, @a.left_until(@d)
-        assert_match /06:31:/, @a.left_until(@e)
+        assert_equal "01:14:04", @a.left_until(@b)
+        assert_equal "01:24:04", @b.left_until(@c)
+        assert_equal "00:01:04", @a.left_until(@d)
+        assert_equal "06:30:04", @a.left_until(@e)
+        assert_equal "00:00:04", @a.left_until(@f)
       end
     end
   end

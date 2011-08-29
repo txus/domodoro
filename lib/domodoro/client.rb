@@ -12,6 +12,14 @@ module Domodoro
         @connected = true
       end
 
+      def current_action
+        @current_action
+      end
+
+      def current_action=(action)
+        @current_action = action
+      end
+
       def next_action
         @next_action
       end
@@ -36,25 +44,23 @@ module Domodoro
             def c.receive_object(object)
               case object[:current_action].last
               when :start
-                puts "[#{object[:current_action].first}] - Starting pomodoro!"
                 Client.work
               when :stop
-                puts "[#{object[:current_action].first}] - Pomodoro break!"
                 Client.break
               when :lunch
-                puts "[#{object[:current_action].first}] - Lunch time!"
                 Client.lunch
               when :go_home
-                puts "[#{object[:current_action].first}] - Time to go home!"
                 Client.home
               end
-              Client.next_action = object[:next_action]
+              Client.current_action = object[:current_action]
+              Client.next_action    = object[:next_action]
+              puts
             end
           end
           EM.add_periodic_timer(1) do
             EM.next_tick do
-              if Client.connected
-                print_next_action
+              if Client.connected && Client.current_action
+                print_status
               else
                 puts 'Cannot connect to server. Is it running?'
               end
@@ -88,25 +94,36 @@ module Domodoro
         end
       end
 
+      def name_for(action)
+        case action.to_s
+        when "start" then "Pomodoro"
+        when "stop" then "Pomodoro Break"
+        when "lunch" then "Lunch time"
+        when "go_home" then "Go home"
+        end
+      end
+
       def path_to(asset)
         File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'assets', asset))
       end
 
-      def print_next_action
-        timestamp = Timepoint.new(Client.next_action.first)
-        action = case Client.next_action.last
-                 when :start   then "Pomodoro"
-                 when :stop    then "Pomodoro Break"
-                 when :lunch   then "Lunch time"
-                 when :go_home then "Go home"
-                 end
+      def print_status
+        current_action = name_for(Client.current_action.last)
 
-        time_left = timestamp.left_until
+        if Client.next_action
+          next_action    = name_for(Client.next_action.last)
+
+          # Calculate time left until next action
+          now       = Timepoint.new(Time.now.hour, Time.now.min)
+          timestamp = Timepoint.new(Client.next_action.first)
+          time_left = now.left_until(timestamp)
+        end
 
         $stdout.print "\r"
-        $stdout.print " " * 50
+        $stdout.print " " * 100
         $stdout.print "\r"
-        $stdout.print "[ #{Client.current_action} ] - Next: #{action} in #{time_left}"
+        $stdout.print "[ #{[Client.current_action.first, current_action].join(' | ')} ]"
+        $stdout.print " - Next: #{next_action} in #{time_left}" if Client.next_action
         $stdout.flush
       end
 

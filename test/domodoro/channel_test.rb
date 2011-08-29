@@ -22,11 +22,11 @@ module Domodoro
       describe 'if theres an action for the timestamp' do
         it 'broadcasts it' do
           @channel.expects(:<<).with(
-            :action => ["08:30", :start],
+            :current_action => ["08:30", :start],
             :next_action => ["09:00", :stop]
           )
           @channel.expects(:<<).with(
-            :action => ["09:00", :stop],
+            :current_action => ["09:00", :stop],
             :next_action => nil
           )
 

@@ -5,6 +5,7 @@ module Domodoro
     include EM::MiniTest::Spec
 
     before do
+      File.stubs(:exist?).returns(false)
       @channel = Channel.new
       @schedule = Schedule.new
       @schedule.generate!
